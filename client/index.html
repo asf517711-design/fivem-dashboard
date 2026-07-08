@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FiveM Server Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <h1>🎮 FiveM</h1>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-link active" data-page="dashboard">
+                    <span class="icon">📊</span> لوحة التحكم
+                </a>
+                <a href="#" class="nav-link" data-page="players">
+                    <span class="icon">👥</span> اللاعبون
+                </a>
+                <a href="#" class="nav-link" data-page="server">
+                    <span class="icon">⚙️</span> إعدادات السيرفر
+                </a>
+                <a href="#" class="nav-link" data-page="resources">
+                    <span class="icon">📦</span> الموارد
+                </a>
+                <a href="#" class="nav-link" data-page="logs">
+                    <span class="icon">📋</span> السجلات
+                </a>
+            </nav>
+            <div class="user-info">
+                <div class="avatar">👤</div>
+                <div>
+                    <p class="username">المسؤول</p>
+                    <small>Online</small>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <button class="menu-toggle">☰</button>
+                    <h2 id="page-title">لوحة التحكم</h2>
+                </div>
+                <div class="header-right">
+                    <div class="search-box">
+                        <input type="text" placeholder="ابحث...">
+                    </div>
+                    <button class="logout-btn">تسجيل الخروج</button>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="content">
+                <!-- Dashboard Page -->
+                <div id="dashboard" class="page active">
+                    <div class="dashboard-grid">
+                        <div class="card stat-card">
+                            <div class="stat-icon">👥</div>
+                            <div class="stat-content">
+                                <h3>عدد اللاعبين</h3>
+                                <p class="stat-value" id="player-count">0</p>
+                                <small>من 128</small>
+                            </div>
+                        </div>
+
+                        <div class="card stat-card">
+                            <div class="stat-icon">⏱️</div>
+                            <div class="stat-content">
+                                <h3>وقت التشغيل</h3>
+                                <p class="stat-value" id="uptime">0</p>
+                                <small>ساعة</small>
+                            </div>
+                        </div>
+
+                        <div class="card stat-card">
+                            <div class="stat-icon">⚡</div>
+                            <div class="stat-content">
+                                <h3>FPS</h3>
+                                <p class="stat-value" id="fps">60</p>
+                                <small>إطار في الثانية</small>
+                            </div>
+                        </div>
+
+                        <div class="card stat-card">
+                            <div class="stat-icon">🟢</div>
+                            <div class="stat-content">
+                                <h3>حالة السيرفر</h3>
+                                <p class="stat-value" id="server-status">Online</p>
+                                <small>متصل</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="card">
+                            <h3>الموارد النشطة</h3>
+                            <div id="resources-list" class="resources-list">
+                                <!-- سيتم ملؤها بـ JavaScript -->
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <h3>النشاط الأخير</h3>
+                            <div class="activity-log">
+                                <p class="log-item">✅ تم تشغيل السيرفر</p>
+                                <p class="log-item">👤 انضم اللاعب: Player1</p>
+                                <p class="log-item">📊 تم تحديث الإحصائيات</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Players Page -->
+                <div id="players" class="page">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>قائمة اللاعبين</h3>
+                            <input type="text" placeholder="ابحث عن لاعب..." class="search-input">
+                        </div>
+                        <table class="players-table">
+                            <thead>
+                                <tr>
+                                    <th>رقم اللاعب</th>
+                                    <th>الاسم</th>
+                                    <th>المستوى</th>
+                                    <th>وقت اللعب</th>
+                                    <th>الإجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="players-tbody">
+                                <!-- سيتم ملؤها بـ JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Server Page -->
+                <div id="server" class="page">
+                    <div class="card">
+                        <h3>إعدادات السيرفر</h3>
+                        <div class="settings-group">
+                            <button class="btn btn-primary">🔄 إعادة تشغيل السيرفر</button>
+                            <button class="btn btn-danger">⛔ إيقاف السيرفر</button>
+                            <button class="btn btn-success">✅ تشغيل السيرفر</button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>الإحصائيات</h3>
+                        <div class="stats-detailed">
+                            <div class="stat-row">
+                                <span>استهلاك الذاكرة:</span>
+                                <div class="progress-bar">
+                                    <div class="progress" id="memory-progress"></div>
+                                </div>
+                                <span id="memory-percent">0%</span>
+                            </div>
+                            <div class="stat-row">
+                                <span>استهلاك CPU:</span>
+                                <div class="progress-bar">
+                                    <div class="progress" id="cpu-progress"></div>
+                                </div>
+                                <span id="cpu-percent">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Resources Page -->
+                <div id="resources" class="page">
+                    <div class="card">
+                        <h3>إدارة الموارد</h3>
+                        <div id="resources-management" class="resources-grid">
+                            <!-- سيتم ملؤها بـ JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Logs Page -->
+                <div id="logs" class="page">
+                    <div class="card">
+                        <h3>السجلات</h3>
+                        <div class="logs-container">
+                            <p class="log">📝 تم بدء تشغيل السيرفر</p>
+                            <p class="log">📝 تم تحميل الموارد</p>
+                            <p class="log">📝 جاهز لاستقبال اللاعبين</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{
+  "name": "fivem-dashboard",
+  "version": "1.0.0",
+  "description": "لوحة تحكم سيرفر فايف ام عن بعد",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "nodemon server/index.js",
+    "client": "cd client && npm start",
+    "build": "cd client && npm run build"
+  },
+  "keywords": [
+    "fivem",
+    "dashboard",
+    "server",
+    "admin",
+    "panel"
+  ],
+  "author": "asf517711",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "axios": "^1.4.0",
+    "dotenv": "^16.0.3",
+    "jsonwebtoken": "^9.0.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "socket.io": "^4.6.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
